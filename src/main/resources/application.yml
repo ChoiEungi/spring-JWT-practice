@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     tomcat:
@@ -12,7 +13,7 @@ spring:
   jpa:
     hibernate:
       use-new-id-generator-mappings: false
-      ddl-auto: update
+      ddl-auto: create-drop
 
     show-sql: true
     properties:
