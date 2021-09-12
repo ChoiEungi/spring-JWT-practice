@@ -46,6 +46,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     // when login successful, then send the access token and refresh token.
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
+        System.out.println("request = " + request.getAuthType());
+        System.out.println("response = " + response.getContentType());
+        System.out.println("authentication = " + authentication);
         User user = (User) authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
         String accessToken = JWT.create()
@@ -59,11 +62,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
-//                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-                // not need to check role because access_token check the role.
                 .sign(algorithm);
-//        response.setHeader("access_token", accessToken);
-//        response.setHeader("refresh_token", refreshToken);
+
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);
         tokens.put("refresh_token", refreshToken);

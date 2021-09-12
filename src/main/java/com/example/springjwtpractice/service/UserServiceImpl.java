@@ -1,8 +1,6 @@
 package com.example.springjwtpractice.service;
 
-import com.example.springjwtpractice.domain.Role;
 import com.example.springjwtpractice.domain.User;
-import com.example.springjwtpractice.repository.RoleRepository;
 import com.example.springjwtpractice.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -26,26 +24,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
-    }
-
-    @Override
-    public Role saveRole(Role role) {
-        return roleRepository.save(role);
-    }
-
-    @Override
-    public void addRoleToUser(String username, String roleName) {
-        User user = userRepository.findByUsername(username);
-        Role role = roleRepository.findByName(roleName);
-        user.getRoles().add(role); // save anything due to @Transactional
-
     }
 
     @Override
@@ -67,9 +51,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else {
             log.info("User found in the database: {}", username);
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            user.getRoles().forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority(role.getName()));
-            });
+            user.getRoles();
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
         }
     }

@@ -38,12 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
-//    @Bean
-//    public RoleHierarchy roleHierarchy(){
-//        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-//        roleHierarchy.setHierarchy("ROLE_SUPER_ADMIN > ROLE_ADMIN\nROLE_ADMIN > ROLE_MANAGER\nROLE_MANAGER > ROLE_USER");
-//        return roleHierarchy;
-//    }
+    @Bean
+    public RoleHierarchy roleHierarchy(){
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ADMIN > USER");
+        return roleHierarchy;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
@@ -52,8 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // make stateless
         http.authorizeRequests().antMatchers("/api/login", "/api/token/refresh/**").permitAll();
-        http.authorizeRequests().antMatchers(GET, "/api/user/**").hasAnyAuthority("ROLE_USER");
-        http.authorizeRequests().antMatchers(POST, "/api/user/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(GET, "/api/user/**").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/api/user/**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().anyRequest().authenticated(); // Specify that URLs are allowed by any authenticated user.
 
         http.addFilter(customAuthenticationFilter);
