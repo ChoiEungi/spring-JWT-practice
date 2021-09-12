@@ -61,7 +61,7 @@ public class UserController {
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
-                        .withClaim("role", user.getRoles().toString()) //check authorization.
+                        .withClaim("role", user.getRole().toString()) //check authorization.
                         .sign(algorithm);
                 Map<String, String> tokens = new HashMap<>();
                 tokens.put("access_token", access_token);

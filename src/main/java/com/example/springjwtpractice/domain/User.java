@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 
@@ -21,6 +22,6 @@ public class User {
     private String username; //email or something
     private String password;
     @Enumerated(EnumType.STRING)
-    private Role roles;
+    private Role role;
 
 }

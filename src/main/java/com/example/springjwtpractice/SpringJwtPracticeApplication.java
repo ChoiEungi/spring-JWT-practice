@@ -22,10 +22,10 @@ public class SpringJwtPracticeApplication {
     @Bean
     CommandLineRunner run(UserService userService){
         return  args -> {
-            userService.saveUser(new User(null, "John Travolta", "john", "1234", Role.ROLE_ADMIN));
-            userService.saveUser(new User(null, "Will Smith", "will", "1234", Role.ROLE_ADMIN));
-            userService.saveUser(new User(null, "Jim Carry", "jim", "1234", Role.ROLE_USER));
-            userService.saveUser(new User(null, "Arnold Schwarzenegger", "arnold", "1234", Role.ROLE_USER));
+            userService.saveUser(new User(null, "John Travolta", "john", "1234", Role.ADMIN));
+            userService.saveUser(new User(null, "Will Smith", "will", "1234", Role.ADMIN));
+            userService.saveUser(new User(null, "Jim Carry", "jim", "1234", Role.USER));
+            userService.saveUser(new User(null, "Arnold Schwarzenegger", "arnold", "1234", Role.USER));
         };
     }
 
