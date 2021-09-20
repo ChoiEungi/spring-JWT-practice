@@ -47,12 +47,14 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     authorities.add(new SimpleGrantedAuthority(role));
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    System.out.println("authenticationToken = " + authenticationToken);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
                 }catch (Exception exception) {
                     log.error("Error logging in: {}", exception.getMessage());
                     response.setHeader("error", exception.getMessage());
                     response.setStatus(FORBIDDEN.value());
+                    System.out.println("FORBIDDEN.value() = " + FORBIDDEN.value());
                     //response.sendError(FORBIDDEN.value());
                     Map<String, String> error = new HashMap<>();
                     error.put("error_message", exception.getMessage());
@@ -60,6 +62,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
             } else {
+                System.out.println("this filter");
                 filterChain.doFilter(request, response);
             }
         }
